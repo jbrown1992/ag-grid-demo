@@ -1,0 +1,22 @@
+export type CashFlowData = {
+    date: string;
+    operatingCashFlow: number;
+    cashFlowFromContinuingOperatingActivities: number;
+    netIncomeFromContinuingOperations: number;
+    operatingGainsLosses: number;
+    depreciationAmortisationDepletion: number;
+    deferredTax: number;
+    assetImpairmentCharge: number;
+    unrealisedGainLossOnInvestmentSecurities: number;
+    stockBasedCompensation: number;
+    changeInWorkingCapital: number;
+    investingCashFlow: number;
+    financingCashFlow: number;
+    endCashPosition: number;
+    capitalExpenditure: number;
+    issuanceOfCapitalStock: number;
+    issuanceOfDebt: number;
+    repaymentOfDebt: number;
+    repurchaseOfCapitalStock: number;
+    freeCashFlow: number;
+};
