@@ -1,0 +1,250 @@
+Main page with ticker selection via text box
+
+Returns basic stock info and chart
+
+Mock all data for MSFT
+
+Stock Summary
+
+Income Statement 
+
+Balance Sheet
+
+Nav bar
+
+React router
+
+Mock data for multiple stocks
+
+Mock Api
+
+Theme context
+
+Copilot stuff
+
+✅ Frontend & React Skill-Building Ideas
+1. Implement Column-Level Features in AG Grid
+
+AG Grid is incredibly powerful—show that you can use it well.
+
+Sorting, filtering, grouping
+
+Column resizing and pinning
+
+Custom cell renderers (e.g., red/green % change formatting)
+
+Conditional styling (e.g., highlight negative revenue)
+
+Row virtualization and pagination
+
+AG Grid Charts (if you want to go deeper)
+
+This is extremely relevant for finance apps.
+
+2. Create a “Ticker Search” with Autocomplete
+
+Improve your text input by adding:
+
+Debounced search
+
+Dropdown suggestions using mock API
+
+Highlight matched text
+
+Keyboard navigation (↑ ↓ Enter)
+
+This is a huge UX milestone and great for interviews.
+
+3. Add Error Handling & Loading States
+
+Most juniors skip this. Seniors don’t.
+
+Loading spinners
+
+Retry buttons
+
+Graceful errors for missing ticker or timeout
+
+Skeleton UI for AG Grid
+
+Makes the app feel real.
+
+4. Add React Query (TanStack Query)
+
+Perfect for a project that hits an API—even a mock one.
+
+You’ll learn:
+
+Caching
+
+Query invalidation
+
+Handling stale data
+
+Automatic refetching
+
+This is modern React at its best.
+
+5. Use Context or Zustand for Global State
+
+Useful for:
+
+Selected ticker
+
+Theme
+
+User preferences (e.g., table density)
+
+Zustand is especially popular in modern React apps.
+
+🎨 UI/UX Expansions
+6. Light/Dark Mode Toggle
+
+Finance dashboards love dark mode.
+
+Store user preference
+
+Use CSS variables
+
+Make AG Grid switch themes too
+
+7. Basic Layout System
+
+Nav bar
+
+Sidebar
+
+Responsive grid layout for charts + tables
+
+Mobile-friendly table collapse
+
+The more polished the layout, the better for your portfolio.
+
+📈 Finance-Specific Skill Builders
+8. Create a “Metrics” Panel With Calculated Fields
+
+From the mock statements, compute:
+
+P/E, P/S, P/B
+
+Gross margin, net margin
+
+YoY growth rates
+
+Free cash flow
+
+You’ll practice:
+
+Derived state
+
+Memoization (useMemo)
+
+Financial reasoning
+
+9. Add Comparison Mode
+
+Compare multiple tickers side-by-side.
+
+Grid with one column per symbol
+
+Color-coded changes
+
+Sparkline chart per ticker
+
+This is a standard feature in real tools.
+
+10. Mini Charting Additions
+
+Use something like Recharts or Chart.js.
+
+Add a sparkline next to each row in AG Grid
+
+Add volume bars under price
+
+Add moving averages (SMA 50 / 200)
+
+Even using mock data, you’ll improve your charting skills.
+
+🧪 Testing & QA Practice
+11. Add Unit + Integration Tests
+
+Use:
+
+Jest
+
+React Testing Library
+
+MSW for mocking API calls
+
+Test:
+
+Ticker search
+
+API handling
+
+Table sorting
+
+Router navigation
+
+Since you work in QA + backend, this will showcase real discipline.
+
+🧱 Backend Simulation / Fullstack
+12. Build a Tiny Node/Express Mock API
+
+Even if everything is hardcoded, this gives you:
+
+Routing
+
+Request validation
+
+Pagination simulation
+
+Delay + error simulation
+
+Helps you learn how frontend interacts with real APIs.
+
+13. Add WebSocket “Live Price” Updates
+
+Mock it.
+
+Use a WebSocket server
+
+Push random price ticks
+
+Update a “live price” widget
+
+Great real-world skill—finance apps use websockets constantly.
+
+🔒 Bonus: Add Caching + LocalStorage
+
+Store:
+
+Last viewed ticker
+
+Theme preference
+
+Recently searched tickers
+
+Grid column state
+
+AG Grid supports “column state” saving; this is very realistic.
+
+⭐ Recommended Learning Roadmap (Sorted by Value)
+
+Autocomplete search + React Query
+
+AG Grid custom cells + formatting + dark mode
+
+Zustand global state
+
+Mock backend with Node + MSW tests
+
+Comparison mode + chart enhancements
+
+If you want, I can also:
+
+✅ Help you structure this as a clean folder layout
+✅ Write boilerplate for your AG Grid tables
+✅ Generate mock financial statements
+✅ Make a full GitHub-ready README
+✅ Help you choose component library (MUI, shadcn/ui, etc.)

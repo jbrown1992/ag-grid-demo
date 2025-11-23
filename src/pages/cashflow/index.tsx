@@ -1,9 +1,8 @@
 import { AgGridReact } from "ag-grid-react";
-import { useState } from "react";
-import type { CashFlowData } from "../../types/cashflowData";
+import { useEffect, useState } from "react";
 import type { ColDef, ColGroupDef } from "ag-grid-community";
-
-const data = [
+import cashflowGridColumns from "../../utils/types/cashflowGridColumns";
+const rawData = [
     {
         "date": "TTM",
         "operatingCashFlow": 147039000,
@@ -116,42 +115,84 @@ const data = [
     }
 ]
 
-const CashflowGrid = () => {
-    const [rowData, setRowData] = useState<CashFlowData[]>(data);
-    const [colDefs] = useState<(ColDef<CashFlowData> | ColGroupDef<CashFlowData>)[]>([
-        { headerName: "Date", field: "date" },
-        { headerName: "Free Cash Flow", field: "freeCashFlow" },
-        //{ headerName: "Operating Cash Flow", field: "operatingCashFlow" },
-        {
-            headerName: "Operating Cash flow", children: [
-                { headerName: "Operating Cash Flow", field: "operatingCashFlow", columnGroupShow: "closed" },
-                {
-                    headerName: "Cash Flow (Continuing Operations)", field: "cashFlowFromContinuingOperatingActivities", columnGroupShow: "open", children: [
-                        { headerName: "Cash Flow (Continuing Operations)", field: "cashFlowFromContinuingOperatingActivities", columnGroupShow: "closed", },
-                        { headerName: "Net Income (Continuing Ops)", field: "netIncomeFromContinuingOperations", columnGroupShow: "open" },
-                        { headerName: "Operating Gains / Losses", field: "operatingGainsLosses", columnGroupShow: "open" },
-                        { headerName: "Depreciation & Amortisation", field: "depreciationAmortisationDepletion", columnGroupShow: "open" },
-                        { headerName: "Deferred Tax", field: "deferredTax", columnGroupShow: "open" },
-                        { headerName: "Asset Impairment Charge", field: "assetImpairmentCharge", columnGroupShow: "open" },
-                        { headerName: "Unrealised Gain/Loss on Securities", field: "unrealisedGainLossOnInvestmentSecurities", columnGroupShow: "open" },
-                        { headerName: "Stock-Based Compensation", field: "stockBasedCompensation", columnGroupShow: "open" },
-                        { headerName: "Change in Working Capital", field: "changeInWorkingCapital", columnGroupShow: "open" },
-                    ]
-                },
-            ]
-        },
+type RawRecord = {
+    date: string;
+    [key: string]: number | string;
+};
 
-        { headerName: "Investing Cash Flow", field: "investingCashFlow" },
-        { headerName: "Financing Cash Flow", field: "financingCashFlow" },
-        { headerName: "Ending Cash Position", field: "endCashPosition" },
-        { headerName: "Capital Expenditure", field: "capitalExpenditure" },
-        { headerName: "Issuance of Capital Stock", field: "issuanceOfCapitalStock" },
-        { headerName: "Issuance of Debt", field: "issuanceOfDebt" },
-        { headerName: "Repayment of Debt", field: "repaymentOfDebt" },
-        { headerName: "Share Repurchases", field: "repurchaseOfCapitalStock" },
-    ]);
+type RowData = {
+    breakdown: string;
+    ttm?: number;
+    [key: string]: any;
+};
+
+
+const fieldFromDate = (date: string): string =>
+    date === "TTM" ? "ttm" : "y" + date.split("/")[2];
+
+export function convertToRowData(records: RawRecord[]): RowData[] {
+    const rows: RowData[] = cashflowGridColumns.map(([_, label]) => ({
+        breakdown: label
+    }));
+
+    for (const record of records) {
+        const col = fieldFromDate(record.date);
+
+        cashflowGridColumns.forEach(([key], index) => {
+            const value = record[key];
+            if (value !== undefined) {
+                rows[index][col] = value;
+            }
+        });
+    }
+
+    return rows;
+}
+
+const getYearFields = (records: RawRecord[]) => {
+    return records.map(r =>
+        fieldFromDate(r.date)
+    );
+};
+
+const buildColumnDefs = (records: RawRecord[]) => {
+    const years = getYearFields(records);
+
+    const yearCols = years.map(field => ({
+        headerName: field === "ttm" ? "TTM" : field.replace("y", ""),
+        field,
+        type: "numericColumn",
+        valueFormatter: (params: any) => {
+            const value = params.value;
+            if (value == null) return "";
+            return value.toLocaleString(undefined, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+            });
+        }
+    }));
+
+    return [
+        { headerName: "Breakdown", field: "breakdown" },
+        ...yearCols
+    ];
+};
+
+const CashflowGrid = () => {
+    const [colDefs, setColDefs] = useState<(ColDef<RowData> | ColGroupDef<RowData>)[]>([]);
+    const [rowData, setRowData] = useState<RowData[]>([]);
+
+    useEffect(() => {
+        const rows = convertToRowData(rawData);
+        setRowData(rows);
+
+        const dynamicCols = buildColumnDefs(rawData);
+        setColDefs(dynamicCols);
+    }, [rawData]);
+
+
     return <div>
-        <div style={{ height: 500 }}>
+        <div style={{ height: 1000 }}>
             <AgGridReact rowData={rowData} columnDefs={colDefs}>
             </AgGridReact >
         </div>
