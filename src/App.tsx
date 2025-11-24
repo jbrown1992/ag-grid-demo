@@ -2,12 +2,14 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import CashflowGrid from './pages/cashflow'
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import Summary from './pages/summary';
+import { TickerContext, TickerProvider } from './context/tickerContext';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello World</div>,
+    element: <Summary />,
   },
   {
     path: "/cashflow",
@@ -21,7 +23,9 @@ const router = createBrowserRouter([
 
 
 const App = () => {
-  return <RouterProvider router={router} />
+  return <TickerProvider>
+    <RouterProvider router={router} />
+  </TickerProvider>
 }
 
 export default App

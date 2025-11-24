@@ -1,7 +1,10 @@
 import { AgGridReact } from "ag-grid-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import type { ColDef, ColGroupDef } from "ag-grid-community";
 import cashflowGridColumns from "../../utils/types/cashflowGridColumns";
+import { TickerContext } from "../../context/tickerContext";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router";
 const rawData = [
     {
         "date": "TTM",
@@ -181,7 +184,10 @@ const buildColumnDefs = (records: RawRecord[]) => {
 const CashflowGrid = () => {
     const [colDefs, setColDefs] = useState<(ColDef<RowData> | ColGroupDef<RowData>)[]>([]);
     const [rowData, setRowData] = useState<RowData[]>([]);
+    const { ticker } = useContext(TickerContext);
+    const nav = useNavigate();
 
+    console.log("ticker on cashflows: " + ticker)
     useEffect(() => {
         const rows = convertToRowData(rawData);
         setRowData(rows);
@@ -191,12 +197,15 @@ const CashflowGrid = () => {
     }, [rawData]);
 
 
-    return <div>
-        <div style={{ height: 1000 }}>
-            <AgGridReact rowData={rowData} columnDefs={colDefs}>
-            </AgGridReact >
+    return (
+        <div>
+            <Button onClick={() => nav("/")}>Back</Button>
+            <div style={{ height: 1000 }}>
+                <AgGridReact rowData={rowData} columnDefs={colDefs}>
+                </AgGridReact >
+            </div>
         </div>
-    </div>
+    )
 }
 
 export default CashflowGrid;
