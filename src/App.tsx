@@ -3,23 +3,30 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import CashflowGrid from './pages/cashflow'
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import Summary from './pages/summary';
-import { TickerContext, TickerProvider } from './context/tickerContext';
+import { TickerProvider } from './context/tickerContext';
+import { pages } from './routes/pages';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: pages.home,
     element: <Summary />,
   },
   {
-    path: "/cashflow",
+    path: pages.incomeStatement,
     element: <CashflowGrid />
   },
   {
-    path: "/income",
+    path: pages.balanceSheet,
+    element: <CashflowGrid />
+  },
+  {
+    path: pages.cashFlow,
     element: <CashflowGrid />
   },
 ]);
+
+
 
 
 const App = () => {

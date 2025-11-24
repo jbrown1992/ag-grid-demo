@@ -5,6 +5,7 @@ import cashflowGridColumns from "../../utils/types/cashflowGridColumns";
 import { TickerContext } from "../../context/tickerContext";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
+import { pages } from "../../routes/pages";
 const rawData = [
     {
         "date": "TTM",
@@ -199,7 +200,7 @@ const CashflowGrid = () => {
 
     return (
         <div>
-            <Button onClick={() => nav("/")}>Back</Button>
+            <Button onClick={() => nav(pages.home)}>Back</Button>
             <div style={{ height: 1000 }}>
                 <AgGridReact rowData={rowData} columnDefs={colDefs}>
                 </AgGridReact >
