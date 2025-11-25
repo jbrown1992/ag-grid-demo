@@ -1,11 +1,14 @@
 import { AgGridReact } from "ag-grid-react";
 import { useContext, useEffect, useState } from "react";
 import type { ColDef, ColGroupDef } from "ag-grid-community";
-import cashflowGridColumns from "../../utils/types/cashflowGridColumns";
-import { TickerContext } from "../../context/tickerContext";
+import cashflowGridColumns from "../../types/cashflowGridColumns";
+import { TickerContext } from "../../context/TickerContext";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
 import { pages } from "../../routes/pages";
+import type { RowData } from "../../types/RowData";
+import { buildColumnDefs } from "../../utils/buildColumnDefs";
+import { convertToRowData } from "../../utils/convertToRowData";
 const rawData = [
     {
         "date": "TTM",
@@ -30,7 +33,7 @@ const rawData = [
         "freeCashFlow": 78017000
     },
     {
-        "date": "30/06/2025",
+        "date": "2025-06-30",
         "operatingCashFlow": 136162000,
         "cashFlowFromContinuingOperatingActivities": 136162000,
         "netIncomeFromContinuingOperations": 101832000,
@@ -52,7 +55,7 @@ const rawData = [
         "freeCashFlow": 71611000
     },
     {
-        "date": "30/06/2024",
+        "date": "2024-06-30",
         "operatingCashFlow": 118548000,
         "cashFlowFromContinuingOperatingActivities": 118548000,
         "netIncomeFromContinuingOperations": 88136000,
@@ -74,7 +77,7 @@ const rawData = [
         "freeCashFlow": 74071000
     },
     {
-        "date": "30/06/2023",
+        "date": "2023-06-30",
         "operatingCashFlow": 87582000,
         "cashFlowFromContinuingOperatingActivities": 87582000,
         "netIncomeFromContinuingOperations": 72361000,
@@ -96,7 +99,7 @@ const rawData = [
         "freeCashFlow": 59475000
     },
     {
-        "date": "30/06/2022",
+        "date": "2022-06-30",
         "operatingCashFlow": 89035000,
         "cashFlowFromContinuingOperatingActivities": 89035000,
         "netIncomeFromContinuingOperations": 72738000,
@@ -119,69 +122,6 @@ const rawData = [
     }
 ]
 
-type RawRecord = {
-    date: string;
-    [key: string]: number | string;
-};
-
-type RowData = {
-    breakdown: string;
-    ttm?: number;
-    [key: string]: any;
-};
-
-
-const fieldFromDate = (date: string): string =>
-    date === "TTM" ? "ttm" : "y" + date.split("/")[2];
-
-export function convertToRowData(records: RawRecord[]): RowData[] {
-    const rows: RowData[] = cashflowGridColumns.map(([_, label]) => ({
-        breakdown: label
-    }));
-
-    for (const record of records) {
-        const col = fieldFromDate(record.date);
-
-        cashflowGridColumns.forEach(([key], index) => {
-            const value = record[key];
-            if (value !== undefined) {
-                rows[index][col] = value;
-            }
-        });
-    }
-
-    return rows;
-}
-
-const getYearFields = (records: RawRecord[]) => {
-    return records.map(r =>
-        fieldFromDate(r.date)
-    );
-};
-
-const buildColumnDefs = (records: RawRecord[]) => {
-    const years = getYearFields(records);
-
-    const yearCols = years.map(field => ({
-        headerName: field === "ttm" ? "TTM" : field.replace("y", ""),
-        field,
-        type: "numericColumn",
-        valueFormatter: (params: any) => {
-            const value = params.value;
-            if (value == null) return "";
-            return value.toLocaleString(undefined, {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 2,
-            });
-        }
-    }));
-
-    return [
-        { headerName: "Breakdown", field: "breakdown" },
-        ...yearCols
-    ];
-};
-
 const CashflowGrid = () => {
     const [colDefs, setColDefs] = useState<(ColDef<RowData> | ColGroupDef<RowData>)[]>([]);
     const [rowData, setRowData] = useState<RowData[]>([]);
@@ -190,7 +130,7 @@ const CashflowGrid = () => {
 
     console.log("ticker on cashflows: " + ticker)
     useEffect(() => {
-        const rows = convertToRowData(rawData);
+        const rows = convertToRowData(rawData, cashflowGridColumns);
         setRowData(rows);
 
         const dynamicCols = buildColumnDefs(rawData);

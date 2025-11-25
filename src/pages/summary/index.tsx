@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import React, { useContext } from 'react';
-import { TickerContext } from '../../context/tickerContext';
+import { TickerContext } from '../../context/TickerContext';
 import { useNavigate } from 'react-router';
 import { pages } from '../../routes/pages';
 const Summary = () => {
@@ -23,9 +23,9 @@ const Summary = () => {
             <Button variant="contained" onClick={() => setTicker(localTicker)}>Select Ticker</Button>
             <div>
                 <b>Ticker {ticker}</b>
-                <Button variant="contained" onClick={() => navigate(pages.incomeStatement)}>Income Statement</Button>
-                <Button variant="contained" onClick={() => navigate(pages.balanceSheet)}>Balance Sheet</Button>
-                <Button variant="contained" onClick={() => navigate(pages.cashFlow)}>Cash Flow</Button>
+                <Button variant="outlined" onClick={() => navigate(pages.incomeStatement)}>Income Statement</Button>
+                <Button variant="outlined" onClick={() => navigate(pages.balanceSheet)}>Balance Sheet</Button>
+                <Button variant="outlined" onClick={() => navigate(pages.cashFlow)}>Cash Flow</Button>
             </div>
         </div>
     )
